@@ -1,40 +1,10 @@
 trigger:
-  - none
-  
-pr:
-  - none
-  
-jobs:
-  - job: 'DeployBlueProduction'
-    pool:
-      name: 'Default'  # Change to the 'hkagent' agent pool
-  
+  - main
+
+stages:
+- stage: DemoStage
+  jobs:
+  - job: RunDemoJob
     steps:
-    - script: echo Deploying Blue to Production
-      displayName: 'Deploy Blue to Production'
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/blue'))
-
-    - task: AzureResourceGroupDeployment@2
-      inputs:
-        azureResourceManagerConnection: '$(azureServiceConnection)'
-        subscriptionId: '82bb4474-face-4cec-8298-27d4f1866439'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: 'testbyme'
-        templateLocation: 'https://github.com/Yohannesn2/iac_phase2/tree/v1bluedeployment'
-
-  - job: 'DeployGreenStaging'
-    pool:
-      name: 'Default'  # Change to the 'hkagent' agent pool
-  
-    steps:
-    - script: echo Deploying Green to Staging
-      displayName: 'Deploy Green to Staging'
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/green'))
-
-    - task: AzureResourceGroupDeployment@2
-      inputs:
-        azureResourceManagerConnection: '$(azureServiceConnection)'
-        subscriptionId: '82bb4474-face-4cec-8298-27d4f1866439'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: 'testbyme'
-        templateLocation: 'https://github.com/Yohannesn2/iac_phase2/tree/v2greendeployment'
+    - script: echo Running Demo Stage
+      displayName: 'Run Demo Stage'
