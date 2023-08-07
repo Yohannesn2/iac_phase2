@@ -5,6 +5,8 @@ stages:
 - stage: DemoStage
   jobs:
   - job: RunDemoJob
+    pool:
+      name: 'default'  # Change to your agent pool name
     steps:
     - script: echo Running Demo Stage
       displayName: 'Run Demo Stage'
