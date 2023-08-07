@@ -1,0 +1,38 @@
+trigger:
+  - none
+  
+pr:
+  - none
+  
+jobs:
+  - job: 'DeployStaging'
+    pool:
+      name: your-self-hosted-agent-pool
+  
+    steps:
+    - script: echo Deploying to Staging
+      displayName: 'Deploy to Staging'
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/version2'))
+  
+    - task: AzurePowerShell@5
+      inputs:
+        azureSubscription: '82bb4474-face-4cec-8298-27d4f1866439'  # Replace with your Azure service connection name
+        scriptType: 'InlineScript'
+        inlineScript: |
+          az deployment group create --resource-group test --template-uri 'https://raw.githubusercontent.com/yourorg/repo/version2/main.bicep'
+  
+  - job: 'DeployProduction'
+    pool:
+      name: your-self-hosted-agent-pool
+  
+    steps:
+    - script: echo Deploying to Production
+      displayName: 'Deploy to Production'
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/version1'))
+  
+    - task: AzurePowerShell@5
+      inputs:
+        azureSubscription: '82bb4474-face-4cec-8298-27d4f1866439'  # Replace with your Azure service connection name
+        scriptType: 'InlineScript'
+        inlineScript: |
+          az deployment group create --resource-group test --template-uri 'https://raw.githubusercontent.com/yourorg/repo/version1/main.bicep'
