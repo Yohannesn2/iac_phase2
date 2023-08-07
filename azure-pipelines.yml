@@ -7,7 +7,7 @@ pr:
 jobs:
   - job: 'DeployBlueProduction'
     pool:
-      name: 'hkagent'  # Change to the 'hkagent' agent pool
+      name: 'Default'  # Change to the 'hkagent' agent pool
   
     steps:
     - script: echo Deploying Blue to Production
@@ -24,7 +24,7 @@ jobs:
 
   - job: 'DeployGreenStaging'
     pool:
-      name: 'hkagent'  # Change to the 'hkagent' agent pool
+      name: 'Default'  # Change to the 'hkagent' agent pool
   
     steps:
     - script: echo Deploying Green to Staging
