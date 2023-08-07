@@ -7,7 +7,7 @@ pr:
 jobs:
   - job: 'DeployStaging'
     pool:
-      name: your-self-hosted-agent-pool
+      name: 'GeorgenirayoAgent'
   
     steps:
     - script: echo Deploying to Staging
@@ -23,7 +23,7 @@ jobs:
   
   - job: 'DeployProduction'
     pool:
-      name: your-self-hosted-agent-pool
+      name: 'GeorgenirayoAgent'
   
     steps:
     - script: echo Deploying to Production
