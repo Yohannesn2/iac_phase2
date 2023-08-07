@@ -5,34 +5,36 @@ pr:
   - none
   
 jobs:
-  - job: 'DeployStaging'
+  - job: 'DeployBlueProduction'
     pool:
-      name: 'hkagent'
+      name: 'hkagent'  # Change to the 'hkagent' agent pool
   
     steps:
-    - script: echo Deploying to Staging
-      displayName: 'Deploy to Staging'
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/version2'))
-  
-    - task: AzurePowerShell@5
+    - script: echo Deploying Blue to Production
+      displayName: 'Deploy Blue to Production'
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/blue'))
+
+    - task: AzureResourceGroupDeployment@2
       inputs:
-        azureSubscription: '82bb4474-face-4cec-8298-27d4f1866439'  # Replace with your Azure service connection name
-        scriptType: 'InlineScript'
-        inlineScript: |
-          az deployment group create --resource-group test --template-uri 'https://github.com/Yohannesn2/iac_phase2/blob/v2greendeployment/main.bicep'
-  
-  - job: 'DeployProduction'
+        azureResourceManagerConnection: '$(azureServiceConnection)'
+        subscriptionId: '82bb4474-face-4cec-8298-27d4f1866439'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'testbyme'
+        templateLocation: 'https://github.com/Yohannesn2/iac_phase2/tree/v1bluedeployment'
+
+  - job: 'DeployGreenStaging'
     pool:
-      name: 'hkagent'
+      name: 'hkagent'  # Change to the 'hkagent' agent pool
   
     steps:
-    - script: echo Deploying to Production
-      displayName: 'Deploy to Production'
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/version1'))
-  
-    - task: AzurePowerShell@5
+    - script: echo Deploying Green to Staging
+      displayName: 'Deploy Green to Staging'
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/green'))
+
+    - task: AzureResourceGroupDeployment@2
       inputs:
-        azureSubscription: '82bb4474-face-4cec-8298-27d4f1866439'  # Replace with your Azure service connection name
-        scriptType: 'InlineScript'
-        inlineScript: |
-          az deployment group create --resource-group test --template-uri 'https://github.com/Yohannesn2/iac_phase2/blob/v1bluedeployment/main.bicep'
+        azureResourceManagerConnection: '$(azureServiceConnection)'
+        subscriptionId: '82bb4474-face-4cec-8298-27d4f1866439'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'testbyme'
+        templateLocation: 'https://github.com/Yohannesn2/iac_phase2/tree/v2greendeployment'
