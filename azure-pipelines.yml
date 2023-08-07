@@ -19,7 +19,7 @@ jobs:
         azureSubscription: '82bb4474-face-4cec-8298-27d4f1866439'  # Replace with your Azure service connection name
         scriptType: 'InlineScript'
         inlineScript: |
-          az deployment group create --resource-group test --template-uri 'https://raw.githubusercontent.com/yourorg/repo/version2/main.bicep'
+          az deployment group create --resource-group test --template-uri 'https://github.com/Yohannesn2/iac_phase2/blob/v2greendeployment/main.bicep'
   
   - job: 'DeployProduction'
     pool:
@@ -35,4 +35,4 @@ jobs:
         azureSubscription: '82bb4474-face-4cec-8298-27d4f1866439'  # Replace with your Azure service connection name
         scriptType: 'InlineScript'
         inlineScript: |
-          az deployment group create --resource-group test --template-uri 'https://raw.githubusercontent.com/yourorg/repo/version1/main.bicep'
+          az deployment group create --resource-group test --template-uri 'https://github.com/Yohannesn2/iac_phase2/blob/v1bluedeployment/main.bicep'
